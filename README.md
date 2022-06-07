@@ -1,7 +1,7 @@
 # sdf-modeling-service-k8s-manifests
 This repository holds Kubernetes resources for the for SDF-hosted modeling service.
 
-Inside the `/charts` directory, the Helm charts used in the assembly of the [demo](https://github.com/jacquelinegarrahan/lume-orchestration-demo) have been packaged alongside `demo_values.yml` files for each. These are extremely simplistic and implements simple string example username/passwords for resource access.
+Inside the `/charts` directory, the Helm charts used in the assembly of the [demo](https://github.com/jacquelinegarrahan/lume-orchestration-demo) have been packaged alongside `demo_values.yaml` files for each. These are extremely simplistic and implements simple string example username/passwords for resource access.
 
 Each of the charts has been downloaded from their respective repositories using the `helm pull` command (mysql and mongodb from https://charts.bitnami.com/bitnami, prefect services from https://prefecthq.github.io/server/). 
 

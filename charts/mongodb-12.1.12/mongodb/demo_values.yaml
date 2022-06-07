@@ -1,0 +1,4 @@
+auth:
+  rootPassword: password
+service:
+  port: 27017
