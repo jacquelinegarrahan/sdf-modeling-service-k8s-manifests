@@ -7,7 +7,7 @@ Each of the charts has been downloaded from their respective repositories using 
 
 ## Components:
 
-![component_diagram](files/Modeling_infra.darwio.png)
+![image](files/Modeling_infra.darwio.png)
 
 Notes:  
 * MongoDB and MySQL will run as operators, likely in own Deployment...  
