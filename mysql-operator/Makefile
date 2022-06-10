@@ -1,17 +1,16 @@
+NAMESPACE ?= modeldb
 
-SECRET_PATH=secret/ard/ard--dev/mysql
-
-operator:
+operator-helm:
 	helm repo add mysql-operator https://mysql.github.io/mysql-operator/
 	helm repo update
-	helm template mysql-operator mysql-operator/mysql-operator > mysql-operator.yaml
+	helm template mysql-operator mysql-operator/mysql-operator --namespace=$(NAMESPACE) > mysql-operator.yaml
+	curl https://raw.githubusercontent.com/mysql/mysql-operator/trunk/deploy/deploy-crds.yaml > mysql-crd.yaml
 
-secrets:
-	mkdir -p etc/.secrets/
-	set -e; for i in rootPassword; do vault kv get --field=$$i $(SECRET_PATH) > etc/.secrets/$$i ; done
-
-clear-secrets:
-	rm -rf etc/.secrets/
+operator-yaml:
+	curl https://raw.githubusercontent.com/mysql/mysql-operator/trunk/deploy/deploy-operator.yaml > mysql-operator.yaml
+	curl https://raw.githubusercontent.com/mysql/mysql-operator/trunk/deploy/deploy-crds.yaml > mysql-crd.yaml
+ 
+operator: operator-helm
 
 dump:
 	kubectl kustomize .
@@ -19,5 +18,5 @@ dump:
 run-apply:
 	kubectl apply -k .
 
-apply: operator secrets run-apply clear-secrets
+apply: operator run-apply
 	

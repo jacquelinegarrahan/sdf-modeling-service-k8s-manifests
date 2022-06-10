@@ -3,3 +3,15 @@ resources:
 # hmmm... mysql doesn't work...
 #- database-modeldb.yaml
 - database-resultsdb.yaml
+
+# modeldb
+secretGenerator:
+- name: modeldb-passwords
+  literals:
+  - rootUser=root
+  - rootHost=%
+  files:
+  - rootPassword=etc/.secrets/rootPassword
+
+generatorOptions:
+  disableNameSuffixHash: true

@@ -4,7 +4,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: mysql-operator-sa
-  namespace: resultsdb
+  namespace: modeldb
 ---
 # Source: mysql-operator/templates/cluster_role_operator.yaml
 # The main role for the operator
@@ -116,7 +116,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: mysql-operator-sa
-    namespace: resultsdb
+    namespace: modeldb
   # TODO The following entry is for dev purposes only and must be deleted
   #- kind: Group
   #  name: system:serviceaccounts
@@ -131,7 +131,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mysql-operator
-  namespace: resultsdb
+  namespace: modeldb
   labels:
     name: mysql-operator
 spec:
@@ -147,7 +147,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql-operator
-  namespace: resultsdb
+  namespace: modeldb
   labels:
     version: "8.0.29-2.0.4"
     app.kubernetes.io/name: mysql-operator

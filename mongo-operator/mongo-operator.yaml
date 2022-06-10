@@ -159,7 +159,7 @@ spec:
           - percona-server-mongodb-operator
           env:
             - name: WATCH_NAMESPACE
-              value: resultsdb
+              value: modeldb
             - name: POD_NAME
               valueFrom:
                 fieldRef:

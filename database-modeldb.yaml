@@ -2,6 +2,7 @@ apiVersion: mysql.oracle.com/v2
 kind: InnoDBCluster
 metadata:
   name: modeldb
+  namespace: modeldb
 spec:
   secretName: modeldb-passwords
   tlsUseSelfSigned: true

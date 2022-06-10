@@ -3,14 +3,5 @@ namespace: modeldb
 resources:
 - ns.yaml
 - mysql-operator.yaml
+- mysql-crd.yaml
 
-secretGenerator:
-- name: modeldb-passwords
-  literals:
-  - rootUser=root
-  - rootHost=%
-  files:
-  - rootPassword=etc/.secrets/rootPassword
-
-generatorOptions:
-  disableNameSuffixHash: true
