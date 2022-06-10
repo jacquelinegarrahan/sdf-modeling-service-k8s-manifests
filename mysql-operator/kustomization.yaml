@@ -5,7 +5,7 @@ resources:
 - mysql-operator.yaml
 
 secretGenerator:
-- name: mysql-passwords
+- name: modeldb-passwords
   literals:
   - rootUser=root
   - rootHost=%
