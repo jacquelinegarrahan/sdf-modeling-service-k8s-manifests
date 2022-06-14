@@ -1,0 +1,216 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prefect-server-ui
+spec:
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prefect-server-apollo
+spec:
+  type: ClusterIP
+---
+$patch: delete
+apiVersion: v1
+kind: Service
+metadata:
+  name: prefect-server-postgresql
+---
+$patch: delete
+apiVersion: v1
+kind: Service
+metadata:
+  name: prefect-server-postgresql-headless
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prefect-server-apollo
+spec:
+  template:
+    spec:
+      containers:
+      - name: apollo
+        env:
+        - name: PREFECT_SERVER__DATABASE__USERNAME
+          $patch: delete
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prefect-server-apollo
+spec:
+  template:
+    spec:
+      containers:
+        - name: apollo
+          env:
+            - name: PREFECT_SERVER__DATABASE__HOST
+              value: prefect-postgres-pooler
+            - name: PREFECT_SERVER__DATABASE__USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: prefect.prefect-postgres.credentials.postgresql.acid.zalan.do
+                  key: username
+            - name: PREFECT_SERVER__DATABASE__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: prefect.prefect-postgres.credentials.postgresql.acid.zalan.do
+                  key: password
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prefect-server-graphql
+spec:
+  template:
+    spec:
+      containers:
+      - name: graphql
+        env:
+        - name: PREFECT_SERVER__DATABASE__USERNAME
+          $patch: delete
+      initContainers:
+      - name: db-upgrade
+        env:
+        - name: PREFECT_SERVER__DATABASE__USERNAME
+          $patch: delete
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prefect-server-graphql
+spec:
+  template:
+    spec:
+      containers:
+        - name: graphql
+          env:
+            - name: PREFECT_SERVER__DATABASE__CONNECTION_URL
+              value: postgresql://prefect@prefect-postgres-pooler:5432/prefect?sslmode=require
+            - name: PREFECT_SERVER__DATABASE__HOST
+              value: prefect-postgres-pooler
+            - name: PREFECT_SERVER__DATABASE__USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: prefect.prefect-postgres.credentials.postgresql.acid.zalan.do
+                  key: username
+            - name: PREFECT_SERVER__DATABASE__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: prefect.prefect-postgres.credentials.postgresql.acid.zalan.do
+                  key: password
+      initContainers:
+        - name: db-upgrade
+          #command: [ "bash", "-c", "sleep infinity" ]
+          env:
+            - name: PREFECT_SERVER__DATABASE__CONNECTION_URL
+              value: postgresql://prefect@prefect-postgres-pooler:5432/prefect?sslmode=require
+            - name: PREFECT_SERVER__DATABASE__HOST
+              value: prefect-postgres-pooler
+            - name: PREFECT_SERVER__DATABASE__USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: prefect.prefect-postgres.credentials.postgresql.acid.zalan.do
+                  key: username
+            - name: PREFECT_SERVER__DATABASE__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: prefect.prefect-postgres.credentials.postgresql.acid.zalan.do
+                  key: password
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: prefect.prefect-postgres.credentials.postgresql.acid.zalan.do
+                  key: password
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prefect-server-hasura
+spec:
+  template:
+    spec:
+      containers:
+      - name: hasura
+        env:
+        - name: PREFECT_SERVER__DATABASE__USERNAME
+          $patch: delete
+        - name: PGPASSWORD
+          $patch: delete
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prefect-server-hasura
+spec:
+  template:
+    spec:
+      containers:
+        - name: hasura
+          env:
+            - name: HASURA_GRAPHQL_DATABASE_URL
+              value: postgresql://prefect@prefect-postgres-pooler:5432/prefect?sslmode=require
+            - name: PREFECT_SERVER__DATABASE__HOST
+              value: prefect-postgres-pooler
+            - name: PREFECT_SERVER__DATABASE__USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: prefect.prefect-postgres.credentials.postgresql.acid.zalan.do
+                  key: username
+            - name: PREFECT_SERVER__DATABASE__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: prefect.prefect-postgres.credentials.postgresql.acid.zalan.do
+                  key: password
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: prefect.prefect-postgres.credentials.postgresql.acid.zalan.do
+                  key: password
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prefect-server-towel
+spec:
+  template:
+    spec:
+      containers:
+      - name: towel
+        env:
+        - name: PREFECT_SERVER__DATABASE__USERNAME
+          $patch: delete
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prefect-server-towel
+spec:
+  template:
+    spec:
+      containers:
+        - name: towel
+          env:
+            - name: PREFECT_SERVER__DATABASE__HOST
+              value: prefect-postgres-pooler
+            - name: PREFECT_SERVER__DATABASE__USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: prefect.prefect-postgres.credentials.postgresql.acid.zalan.do
+                  key: username
+            - name: PREFECT_SERVER__DATABASE__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: prefect.prefect-postgres.credentials.postgresql.acid.zalan.do
+                  key: password
+
+

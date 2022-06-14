@@ -1,0 +1,16 @@
+apiVersion: mysql.oracle.com/v2
+kind: InnoDBCluster
+metadata:
+  name: modeldb
+  namespace: modeldb
+spec:
+  secretName: modeldb-passwords
+  tlsUseSelfSigned: true
+  instances: 3
+  router:
+    instances: 1
+  datadirVolumeClaimTemplate:
+    accessModes: [ "ReadWriteOnce" ]
+    resources:
+      requests:
+        storage: 100Gi

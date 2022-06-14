@@ -1,0 +1,17 @@
+
+namespace: prefect
+
+bases:
+- zalando-postgres-operator
+
+resources:
+- ns.yaml
+- helm.yaml 
+- endpoints.yaml
+- postgres.yaml
+
+patches: 
+- delete-builtin-postgres.yaml
+
+patchesStrategicMerge:
+- prefect-patch.yaml

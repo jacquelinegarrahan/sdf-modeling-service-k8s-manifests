@@ -1,0 +1,7 @@
+namespace: modeldb
+
+resources:
+- ns.yaml
+- mysql-operator.yaml
+- mysql-crd.yaml
+

@@ -1,0 +1,21 @@
+
+bases:
+- prefect
+- mongo-operator
+- mysql-operator
+
+resources:
+- database-modeldb.yaml
+- database-resultsdb.yaml
+
+# modeldb
+secretGenerator:
+- name: modeldb-passwords
+  literals:
+  - rootUser=root
+  - rootHost=%
+  files:
+  - rootPassword=etc/.secrets/rootPassword
+
+generatorOptions:
+  disableNameSuffixHash: true
