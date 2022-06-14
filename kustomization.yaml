@@ -1,7 +1,11 @@
 
+bases:
+- prefect
+- mongo-operator
+- mysql-operator
+
 resources:
-# hmmm... mysql doesn't work...
-#- database-modeldb.yaml
+- database-modeldb.yaml
 - database-resultsdb.yaml
 
 # modeldb
